@@ -1,3 +1,8 @@
+/* New News Extension
+A Cypher VI project
+By Alex and Brandon Fantine 
+*/
+
 let gameButton = document.getElementById("gameButton");
 
 let wordOne = document.getElementById("wordOne");
@@ -8,7 +13,7 @@ let  resetWords = document.getElementById("resetWords");
 let buttonCount = document.getElementById("buttonCount");
 let articleButton = document.getElementById("article");
 
-
+//use the storage api to retrieve the stored words
 chrome.storage.sync.get("wordOne", function(result){
   wordOne.innerHTML = result.wordOne
 });
@@ -19,11 +24,14 @@ chrome.storage.sync.get("wordThree", function(result){
   wordThree.innerHTML = result.wordThree
 });
 
+//perform some checks using the button count, i.e. should the words show
 chrome.storage.sync.get("buttonCount", function(result){
   buttonCount.innerHTML = result.buttonCount
+  //if at least one button has been pressed, the first clue shows
   if (result.buttonCount >= 1){
     wordOne.hidden = false;
   }
+  //same for second clue, etc.
   if (result.buttonCount >= 2){
     wordTwo.hidden = false;
   }
@@ -33,23 +41,16 @@ chrome.storage.sync.get("buttonCount", function(result){
   }
 });
 
+//upon loading the extension, the script begins to add buttons to the page
 document.addEventListener("DOMContentLoaded", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.storage.sync.get("buttonCount", function(result){
-    const buttonPresses = result.buttonCount;
-    console.log(buttonPresses);
-    if (buttonPresses === 3){
-      console.log("button pressed 3 times in listener");
-    }
-  });
-
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     function: addButton,
   });
 }, false);
 
+//when the article button is clicked, open the new tab
 articleButton.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
@@ -58,6 +59,7 @@ articleButton.addEventListener("click", async () => {
   });
 });
 
+//when the reset button is pressed, reset the words and the button counter
 resetWords.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
@@ -65,6 +67,8 @@ resetWords.addEventListener("click", async () => {
     function: handleWordReset,
   });
 });
+
+//function to open the news article
 function articleTravel(){
   chrome.storage.sync.get("newsURL", function(result){
     console.log("logging article url");
@@ -73,6 +77,7 @@ function articleTravel(){
   });
 }
 
+//funciton to add buttons to the webpage
 function addButton(){
   //chrome.storage.sync.set({ buttonPressed : false });
   var button = document.createElement('button');
@@ -81,11 +86,13 @@ function addButton(){
   button.id = 'gameButton'
   button.onclick = function() {
     console.log("button pressed");
+    //adding this button pressed bool was supposed to fix the issue of extra buttons appearing
+    //because you open the extension and press a button, but unfortunately it didn't work
     chrome.storage.sync.set({ buttonPressed : true });
     //document.getElementById("gameButton").innerHTML = "pressed";
     button.remove();
     chrome.storage.sync.get("buttonCount", function(result){
-
+      //updating the button count
       console.log("logging button counter BEFORE");
       console.log(result.buttonCount);
       result.buttonCount = result.buttonCount + 1;
@@ -94,7 +101,7 @@ function addButton(){
       chrome.storage.sync.set({ buttonCount: result.buttonCount});
 
     });
-
+    //choose a random paragraph and append the button to it
     var pars = document.getElementsByTagName("p");
     var chosen_par = pars[Math.floor(Math.random() * pars.length)];
     chosen_par.appendChild(button);
@@ -125,7 +132,7 @@ function addButton(){
 }
 
 
-
+//resets the entire game, including clue words and button count
 function handleWordReset(){
 
   console.log("made it to handleWordReset");
