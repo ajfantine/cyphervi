@@ -42,6 +42,4 @@ def generate_words(url):
     return [word for word, freq in three_words]
 
 if __name__ == '__main__':
-
-    three_words = generate_words('https://www.nbcnews.com/news/world/inside-egypt-s-3-000-year-old-lost-golden-city-n1263585')
-    print(three_words)
+    pass

@@ -11,7 +11,7 @@ import random
 app = Flask(__name__)
 CORS(app)
 
-url = random.sample(url_list, 1)[0]
+
 
 @app.route('/test', methods = ['GET'])
 def test():
@@ -21,6 +21,7 @@ def test():
 
 @app.route('/getWords', methods = ['GET'])
 def get_words():
+    url = random.sample(url_list, 1)[0]
     three_words = generate_words(url)
     wordOne = three_words[0]
     wordTwo = three_words[1]

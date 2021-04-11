@@ -4,10 +4,10 @@ let wordOne = document.getElementById("wordOne");
 let wordTwo = document.getElementById("wordTwo");
 let wordThree = document.getElementById("wordThree");
 
-const resetWords = document.getElementById("resetWords");
+let  resetWords = document.getElementById("resetWords");
 let buttonCount = document.getElementById("buttonCount");
 let articleButton = document.getElementById("article");
-const TUNNEL = "https://a1b318cf294c.ngrok.io";
+
 
 chrome.storage.sync.get("wordOne", function(result){
   wordOne.innerHTML = result.wordOne
@@ -77,8 +77,7 @@ function addButton(){
   //chrome.storage.sync.set({ buttonPressed : false });
   var button = document.createElement('button');
   button.type = 'button';
-  button.innerHTML = 'Press me';
-  button.className = 'btn-styled';
+  button.innerHTML = 'Hint Word';
   button.id = 'gameButton'
   button.onclick = function() {
     console.log("button pressed");
@@ -135,7 +134,7 @@ function handleWordReset(){
     redirect: 'follow'
   };
   //document.getElementById("wordOne").innerHTML = result["wordOne"];
-  fetch("https://a1b318cf294c.ngrok.io" + "/getWords", requestOptions)
+  fetch("https://270cb53e12d5.ngrok.io" + "/getWords", requestOptions)
     .then((response) => response.json())
     .then(result => {
       chrome.storage.sync.set({ wordOne: result.wordOne });
@@ -148,17 +147,4 @@ function handleWordReset(){
     .catch(error => console.log('error', error));
 
 
-}
-
-function testSend() {
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  };
-
-  //replace with whatever the url actually is when ngrok is ran
-  fetch("https://a1b318cf294c.ngrok.io" + "/test", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
 }
