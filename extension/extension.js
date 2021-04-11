@@ -7,7 +7,7 @@ let wordThree = document.getElementById("wordThree");
 const resetWords = document.getElementById("resetWords");
 let buttonCount = document.getElementById("buttonCount");
 let articleButton = document.getElementById("article");
-const TUNNEL = "https://61d9a6da996b.ngrok.io";
+const TUNNEL = "https://a1b318cf294c.ngrok.io";
 
 chrome.storage.sync.get("wordOne", function(result){
   wordOne.innerHTML = result.wordOne
@@ -21,7 +21,14 @@ chrome.storage.sync.get("wordThree", function(result){
 
 chrome.storage.sync.get("buttonCount", function(result){
   buttonCount.innerHTML = result.buttonCount
-  if (result.buttonCount === 3){
+  if (result.buttonCount >= 1){
+    wordOne.hidden = false;
+  }
+  if (result.buttonCount >= 2){
+    wordTwo.hidden = false;
+  }
+  if (result.buttonCount >= 3){
+    wordThree.hidden = false;
     articleButton.hidden = false;
   }
 });
@@ -59,8 +66,11 @@ resetWords.addEventListener("click", async () => {
   });
 });
 function articleTravel(){
-  var url = "https://www.google.com";
-  window.open(url);
+  chrome.storage.sync.get("newsURL", function(result){
+    console.log("logging article url");
+    console.log(result.newsURL);
+    window.open(result.newsURL);
+  });
 }
 
 function addButton(){
@@ -125,12 +135,15 @@ function handleWordReset(){
     redirect: 'follow'
   };
   //document.getElementById("wordOne").innerHTML = result["wordOne"];
-  fetch("https://61d9a6da996b.ngrok.io" + "/getWords", requestOptions)
+  fetch("https://a1b318cf294c.ngrok.io" + "/getWords", requestOptions)
     .then((response) => response.json())
     .then(result => {
       chrome.storage.sync.set({ wordOne: result.wordOne });
       chrome.storage.sync.set({ wordTwo: result.wordTwo });
       chrome.storage.sync.set({ wordThree: result.wordThree });
+      chrome.storage.sync.set({ newsURL: result.newsURL});
+      chrome.storage.sync.set({ buttonCount: 0 });
+      chrome.storage.sync.set({ buttonPressed: false });
     })
     .catch(error => console.log('error', error));
 
@@ -144,7 +157,7 @@ function testSend() {
   };
 
   //replace with whatever the url actually is when ngrok is ran
-  fetch("https://61d9a6da996b.ngrok.io" + "/test", requestOptions)
+  fetch("https://a1b318cf294c.ngrok.io" + "/test", requestOptions)
     .then(response => response.text())
     .then(result => console.log(result))
     .catch(error => console.log('error', error));

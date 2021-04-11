@@ -12,6 +12,13 @@
         color: #212121;
         margin-bottom: 20px;
       }
+      .belowBottom {
+        height: 30px;
+        padding: 5px 15px;
+        font-size: 18px;
+        color: #212121;
+        margin-bottom: 20px;
+      }
       #toArticle{
         display: flex;
         justify-content: center;
@@ -22,15 +29,17 @@
   <body>
     <img src="/images/new_news_logo.PNG" style="width:400px;height:300px;"></img>
     <div class = "bottom">
-      <span id="wordOne"></span>
-      <span id="wordTwo"></span>
-      <span id="wordThree"></span>
+      <span id="wordOne" hidden></span>
+      <span id="wordTwo" hidden></span>
+      <span id="wordThree" hidden></span>
       <button id="resetWords"> Reset </button>
-      <span>Buttons Found: </span>
+    </div>
+    <div class = "belowBottom">
+      <span>Hint Words Found: </span>
       <span id="buttonCount"></span>
     </div>
     <div id="toArticle">
-      <button id="article" hidden>Let's Go</button>
+      <button id="article" hidden>New News!</button>
     </div>
     <script src="extension.js"></script>
   </body>

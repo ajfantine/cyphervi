@@ -1,18 +1,17 @@
-let color = '#3aa757';
 let wordOne = "Press";
 let wordTwo = "Reset";
 let wordThree = "Now!";
+let newsURL = "https://www.google.com"
 let buttonCount = 0;
 let buttonPressed = false;
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ color });
   chrome.storage.sync.set({ wordOne });
   chrome.storage.sync.set({ wordTwo });
   chrome.storage.sync.set({ wordThree });
+  chrome.storage.sync.set({ newsURL });
   chrome.storage.sync.set({ buttonCount });
   chrome.storage.sync.set({ buttonPressed });
-  console.log('Default background color set to %cgreen', `color: ${color}`);
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {

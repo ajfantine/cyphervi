@@ -6,38 +6,40 @@ from nltk.probability import FreqDist
 from nltk.tokenize import RegexpTokenizer
 from bs4 import BeautifulSoup
 
-stopwords = set(stopwords.words('english'))
 
-article = ( 'https://www.nbcnews.com/news/world/inside-egypt-s-3-000-year-old-lost-golden-city-n1263585' )
-page = requests.get(article)
+def generate_words(url):
+    article = url
 
-contents = BeautifulSoup(page.content, 'html.parser' )
+    page = requests.get(article)
 
-title_elem = contents.find('h1', {'class': 'article-hero__headline f8 f9-m fw3 mb3 mt0 f10-xl founders-cond lh-none'})
-title_text = title_elem.text
+    contents = BeautifulSoup(page.content, 'html.parser' )
 
-body_elem = contents.find('div', {'class': 'article-body__content'})
-body_text = body_elem.text
+    title_elem = contents.find('h1', {'class': 'article-hero__headline f8 f9-m fw3 mb3 mt0 f10-xl founders-cond lh-none'})
+    title_text = title_elem.text
 
-total_words = body_text.split()
+    body_elem = contents.find('div', {'class': 'article-body__content'})
+    body_text = body_elem.text
 
-punctuation = RegexpTokenizer(r'\w+')
+    total_words = body_text.split()
 
-words = punctuation.tokenize(body_text)
+    punctuation = RegexpTokenizer(r'\w+')
 
-for x in range (len(words)):
-    words[x] = words[x].lower()
-    
-filtered_text = [w for w in words if not w in stopwords]
+    words = punctuation.tokenize(body_text)
 
-fdist = FreqDist(filtered_text)
+    for x in range (len(words)):
+        words[x] = words[x].lower()
 
-frequency = fdist.most_common(50)
+    filtered_text = [w for w in words if not w in stopwords]
 
-print(random.sample(frequency, 3))
+    fdist = FreqDist(filtered_text)
 
-              
-              
-              
+    frequency = fdist.most_common(50)
 
-             
+    three_words = random.sample(frequency, 3)
+
+    return [word for word, freq in three_words]
+
+if __name__ == '__main__':
+    stopwords = set(stopwords.words('english'))
+    three_words = generate_words('https://www.nbcnews.com/news/world/inside-egypt-s-3-000-year-old-lost-golden-city-n1263585')
+    print(three_words)
