@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <style>
+      .bottom {
+        display: flex;
+        justify-content: space-between;
+        height: 30px;
+        padding: 5px 15px;
+        font-size: 18px;
+        color: #212121;
+        margin-bottom: 20px;
+      }
+      #toArticle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="/images/new_news_logo.PNG" style="width:400px;height:300px;"></img>
+    <div class = "bottom">
+      <span id="wordOne"></span>
+      <span id="wordTwo"></span>
+      <span id="wordThree"></span>
+      <button id="resetWords"> Reset </button>
+      <span>Buttons Found: </span>
+      <span id="buttonCount"></span>
+    </div>
+    <div id="toArticle">
+      <button id="article" hidden>Let's Go</button>
+    </div>
+    <script src="extension.js"></script>
+  </body>
+</html>
